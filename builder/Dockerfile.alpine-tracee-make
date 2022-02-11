@@ -24,8 +24,6 @@ RUN apk --no-cache update && \
     apk --no-cache add libelf-static && \
     apk --no-cache add zlib-static
 
-RUN ["bash", "-c", "curl -L -o /usr/bin/opa https://github.com/open-policy-agent/opa/releases/download/v0.37.1/opa_linux_${arch}_static  &&  chmod 755 /usr/bin/opa"]
-
 # allow TRACEE* and LIBBPFGO* environment variables through sudo
 
 RUN echo "Defaults env_keep += \"LANG LC_* HOME EDITOR PAGER GIT_PAGER MAN_PAGER\"" > /etc/sudoers && \
@@ -45,6 +43,8 @@ RUN export uid=$uid gid=$gid && \
     echo "export PS1=\"\u@\h[\w]$ \"" > /home/tracee/.bashrc && \
     echo "alias ls=\"ls --color\"" >> /home/tracee/.bashrc && \
     ln -s /home/tracee/.bashrc /home/tracee/.profile
+
+ADD opa /usr/bin/opa
 
 USER tracee
 ENV HOME /home/tracee

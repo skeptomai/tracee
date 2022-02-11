@@ -99,7 +99,7 @@ alpine-prepare: \
 	| .check_$(CMD_DOCKER) \
 	.check_tree
 #
-  curl -L https://github.com/open-policy-agent/opa/releases/download/v0.37.1/opa_linux_${ARCH}_static
+	curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.37.1/opa_linux_${ARCH}_static && chmod 755 opa
 #
 	$(CMD_DOCKER) \
 		build \
@@ -107,7 +107,7 @@ alpine-prepare: \
 		-t $(ALPINE_MAKE_CONTNAME):latest \
 		--build-arg uid=$(UID) \
 		--build-arg gid=$(GID) \
-    --build-arg arch=arm64 \
+		--build-arg arch=arm64 \
 		.
 
 UBUNTU_MAKE_CONTNAME = ubuntu-tracee-make
@@ -118,13 +118,15 @@ ubuntu-prepare: \
 	| .check_$(CMD_DOCKER) \
 	.check_tree
 #
+	curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.37.1/opa_linux_${ARCH}_static && chmod 755 opa
+#
 	$(CMD_DOCKER) \
 		build \
 		-f $(UBUNTU_MAKE_DOCKERFILE) \
 		-t $(UBUNTU_MAKE_CONTNAME):latest \
 		--build-arg uid=$(UID) \
 		--build-arg gid=$(GID) \
-    --build-arg arch=$(ARCH) \
+		--build-arg arch=$(ARCH) \
 		.
 
 #
