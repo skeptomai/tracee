@@ -84,6 +84,13 @@ ifeq ($(BTFHUB),)
 BTFHUB=0
 endif
 
+UNAME_P := $(shell uname -p)
+ifeq ($(UNAME_P),aarch64)
+  ARCH ?= arm64
+else
+  ARCH ?= amd64
+endif
+
 # TODO: change BTFHUB=1 for the pull request
 
 TRACEE_CONT_NAME = tracee:latest
@@ -99,6 +106,7 @@ build-tracee: \
 	$(CMD_DOCKER) build \
 		-f $(TRACEE_CONT_DOCKERFILE) \
 		-t $(TRACEE_CONT_NAME) \
+    --build-arg=arch=$(ARCH) \
 		--build-arg=BTFHUB=$(BTFHUB) \
 		--build-arg=FLAVOR=tracee-core \
 		.
@@ -111,6 +119,7 @@ build-tracee-full: \
 	$(CMD_DOCKER) build \
 		-f $(TRACEE_CONT_DOCKERFILE) \
 		-t $(TRACEE_FULL_CONT_NAME) \
+    --build-arg=arch=$(ARCH) \
 		--build-arg=BTFHUB=$(BTFHUB) \
 		--build-arg=FLAVOR=tracee-nocore \
 		.

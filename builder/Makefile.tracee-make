@@ -84,6 +84,12 @@ help:
 UID = $(shell id -u)
 GID = $(shell id -g)
 PWD = $(shell pwd)
+UNAME_P := $(shell uname -p)
+ifeq ($(UNAME_P),aarch64)
+  ARCH ?= arm64
+else
+  ARCH ?= amd64
+endif
 
 ALPINE_MAKE_CONTNAME = alpine-tracee-make
 ALPINE_MAKE_DOCKERFILE = $(abspath $(shell find -name Dockerfile.alpine-tracee-make))
@@ -93,12 +99,15 @@ alpine-prepare: \
 	| .check_$(CMD_DOCKER) \
 	.check_tree
 #
+  curl -L https://github.com/open-policy-agent/opa/releases/download/v0.37.1/opa_linux_${ARCH}_static
+#
 	$(CMD_DOCKER) \
 		build \
 		-f $(ALPINE_MAKE_DOCKERFILE) \
 		-t $(ALPINE_MAKE_CONTNAME):latest \
 		--build-arg uid=$(UID) \
 		--build-arg gid=$(GID) \
+    --build-arg arch=arm64 \
 		.
 
 UBUNTU_MAKE_CONTNAME = ubuntu-tracee-make
@@ -115,6 +124,7 @@ ubuntu-prepare: \
 		-t $(UBUNTU_MAKE_CONTNAME):latest \
 		--build-arg uid=$(UID) \
 		--build-arg gid=$(GID) \
+    --build-arg arch=$(ARCH) \
 		.
 
 #
