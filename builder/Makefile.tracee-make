@@ -107,7 +107,6 @@ alpine-prepare: \
 		-t $(ALPINE_MAKE_CONTNAME):latest \
 		--build-arg uid=$(UID) \
 		--build-arg gid=$(GID) \
-		--build-arg arch=arm64 \
 		.
 
 UBUNTU_MAKE_CONTNAME = ubuntu-tracee-make
@@ -126,7 +125,6 @@ ubuntu-prepare: \
 		-t $(UBUNTU_MAKE_CONTNAME):latest \
 		--build-arg uid=$(UID) \
 		--build-arg gid=$(GID) \
-		--build-arg arch=$(ARCH) \
 		.
 
 #
@@ -210,3 +208,4 @@ endif
 
 .PHONY: clean
 clean:
+	rm -f opa

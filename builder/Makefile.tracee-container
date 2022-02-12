@@ -106,7 +106,6 @@ build-tracee: \
 	$(CMD_DOCKER) build \
 		-f $(TRACEE_CONT_DOCKERFILE) \
 		-t $(TRACEE_CONT_NAME) \
-		--build-arg=arch=$(ARCH) \
 		--build-arg=BTFHUB=$(BTFHUB) \
 		--build-arg=FLAVOR=tracee-core \
 		.
@@ -119,7 +118,6 @@ build-tracee-full: \
 	$(CMD_DOCKER) build \
 		-f $(TRACEE_CONT_DOCKERFILE) \
 		-t $(TRACEE_FULL_CONT_NAME) \
-		--build-arg=arch=$(ARCH) \
 		--build-arg=BTFHUB=$(BTFHUB) \
 		--build-arg=FLAVOR=tracee-nocore \
 		.

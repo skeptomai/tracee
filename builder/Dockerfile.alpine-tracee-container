@@ -47,7 +47,6 @@
 
 ARG BTFHUB=0
 ARG FLAVOR=tracee-ebpf-core
-ARG arch
 
 #
 # tracee-base
@@ -64,8 +63,6 @@ RUN apk --no-cache update && \
     apk --no-cache add libelf zlib && \
     apk --no-cache add libc6-compat && \
     apk --no-cache add bash
-
-RUN ["bash", "-c", "curl -L -o /usr/bin/opa https://github.com/open-policy-agent/opa/releases/download/v0.37.1/opa_linux_${arch}_static  &&  chmod 755 /usr/bin/opa"]
 
 #
 # tracee-make-base
@@ -85,6 +82,8 @@ RUN apk --no-cache update && \
     apk --no-cache add elfutils-dev && \
     apk --no-cache add libelf-static && \
     apk --no-cache add zlib-static
+
+ADD opa /usr/bin/opa
 
 #
 # tracee-make
